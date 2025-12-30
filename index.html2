@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>共通テスト 無機化学 色クイズ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      background: #f5f7fa;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    button {
+      font-size: 18px;
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+    }
+    .true { background: #4caf50; color: white; }
+    .false { background: #f44336; color: white; }
+    .unknown { background: #9e9e9e; color: white; }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>共通テスト 無機化学 色クイズ</h1>
+
+<div class="question" id="question"></div>
+
+<button class="true" onclick="answer(true)">○</button>
+<button class="false" onclick="answer(false)">×</button>
+<button class="unknown" onclick="answer(null)">わからない</button>
+
+<div class="result" id="result"></div>
+
+<script>
+const questions = [
+  { text: "硫酸銅(II)五水和物は青色である", answer: true, weight: 1 },
+  { text: "酸化銅(II)は赤色の固体である", answer: false, weight: 1 },
+  { text: "過マンガン酸カリウムは紫色である", answer: true, weight: 1 },
+  { text: "酸化鉄(III)は黒色である", answer: false, weight: 1 },
+  { text: "硫化カドミウムは黄色である", answer: true, weight: 1 }
+];
+
+let current;
+
+function pickQuestion() {
+  const sum = questions.reduce((s, q) => s + q.weight, 0);
+  let r = Math.random() * sum;
+  for (const q of questions) {
+    r -= q.weight;
+    if (r <= 0) return q;
+  }
+}
+
+function showQuestion() {
+  current = pickQuestion();
+  document.getElementById("question").textContent = current.text;
+  document.getElementById("result").textContent = "";
+}
+
+function answer(user) {
+  if (user === current.answer) {
+    document.getElementById("result").textContent = "正解！";
+    current.weight = Math.max(0.3, current.weight * 0.7);
+  } else {
+    document.getElementById("result").textContent = "不正解";
+    current.weight = Math.min(3, current.weight * 1.3);
+  }
+  setTimeout(showQuestion, 800);
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>

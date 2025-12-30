@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共テ 無機化学 色 ○×</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #eef2f5;
+  padding: 30px;
+}
+.quiz {
+  background: white;
+  max-width: 750px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 10px;
+}
+button {
+  font-size: 18px;
+  padding: 10px 22px;
+  margin: 8px;
+}
+#result {
+  font-size: 20px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="quiz">
+  <h2>共通テスト 無機化学 色</h2>
+  <p id="question"></p>
+
+  <button onclick="answer(true)">○</button>
+  <button onclick="answer(false)">×</button>
+  <button onclick="unknown()">わからない</button>
+
+  <p id="result"></p>
+</div>
+
+<script>
+const quiz = [
+  {q:"硫酸銅(Ⅱ)水溶液は青色である。",a:true,w:1},
+  {q:"塩化ニッケル(Ⅱ)水溶液は緑色である。",a:true,w:1},
+  {q:"硫酸鉄(Ⅱ)水溶液は淡緑色である。",a:true,w:1},
+  {q:"硫酸鉄(Ⅲ)水溶液は黄褐色である。",a:true,w:1},
+  {q:"過マンガン酸カリウム水溶液は赤紫色である。",a:true,w:1},
+  {q:"二クロム酸カリウム水溶液は橙色である。",a:true,w:1},
+  {q:"クロム酸カリウム水溶液は黄色である。",a:true,w:1},
+  {q:"ヨウ素水は褐色である。",a:true,w:1},
+  {q:"水酸化鉄(Ⅲ)は赤褐色沈殿を生じる。",a:true,w:1},
+  {q:"水酸化銅(Ⅱ)は青白色沈殿である。",a:true,w:1},
+  {q:"水酸化アルミニウムは白色沈殿である。",a:true,w:1},
+  {q:"硫化銅(Ⅱ)は黒色沈殿である。",a:true,w:1},
+  {q:"硫化鉛は黒色沈殿である。",a:true,w:1},
+  {q:"硫化亜鉛は白色沈殿である。",a:true,w:1},
+  {q:"硫化銀は黒色沈殿である。",a:true,w:1},
+  {q:"硫酸銅(Ⅱ)五水和物は青色固体である。",a:true,w:1},
+  {q:"無水硫酸銅は白色固体である。",a:true,w:1},
+  {q:"酸化銅(Ⅱ)は黒色固体である。",a:true,w:1},
+  {q:"酸化銅(Ⅰ)は赤色固体である。",a:true,w:1},
+  {q:"二酸化窒素は赤褐色の気体である。",a:true,w:1},
+  {q:"塩素は黄緑色の気体である。",a:true,w:1}
+];
+
+let current;
+
+function weightedRandom() {
+  const sum = quiz.reduce((s,q)=>s+q.w,0);
+  let r = Math.random()*sum;
+  for (let q of quiz) {
+    if ((r -= q.w) < 0) return q;
+  }
+}
+
+function showQuestion() {
+  current = weightedRandom();
+  document.getElementById("question").textContent = current.q;
+  document.getElementById("result").textContent = "";
+}
+
+function answer(choice) {
+  if (choice === current.a) {
+    document.getElementById("result").textContent = "正解";
+    // 出題率を「少しだけ」下げる
+    current.w = Math.max(0.5, current.w * 0.8);
+  } else {
+    document.getElementById("result").textContent = "不正解";
+    current.w *= 1.4;
+  }
+  setTimeout(showQuestion, 800);
+}
+
+function unknown() {
+  document.getElementById("result").textContent = "要復習";
+  current.w *= 1.8;
+  setTimeout(showQuestion, 800);
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
